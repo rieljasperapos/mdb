@@ -1,4 +1,10 @@
-import { Schema, Document } from 'mongoose';
+import { Schema } from 'mongoose';
+
+export interface IBook {
+    title: string;
+    author: string;
+    publishYear: number;
+}
 
 export const bookSchema: Schema<IBook> = new Schema<IBook>(
     {
@@ -19,9 +25,3 @@ export const bookSchema: Schema<IBook> = new Schema<IBook>(
         timestamps: true,
     }
 );
-
-interface IBook extends Document {
-    title: string;
-    author: string;
-    publishYear: number;
-}

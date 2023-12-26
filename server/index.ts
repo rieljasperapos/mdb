@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
-import mongoose, { Document, Schema } from 'mongoose';
-import { Book, IBook } from './models/bookModel';
+import mongoose from 'mongoose';
+import { Book } from './models/bookModel';
+import { IBook } from './schema/bookSchema';
 import { config } from 'dotenv';
 
 config();
