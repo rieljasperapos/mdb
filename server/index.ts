@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { Book } from './models/bookModel';
 import { IBook } from './schema/bookSchema';
 import { config } from 'dotenv';
@@ -8,6 +9,10 @@ config();
 const port = process.env.PORT;
 const app = express();
 app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"]
+}))
 
 app.get('/', (req: Request, res: Response) => {
     res.send("HELLO MONGODB");
@@ -26,7 +31,7 @@ app.get('/books', (req: Request, res: Response) => {
         });
 });
 
-app.get('/books/:title', (req: Request, res: Response) => {
+app.post('/books/:title', (req: Request, res: Response) => {
     Book.findOne({ title: req.params.title })
         .then((data: IBook | null) => {
             if (data) {
