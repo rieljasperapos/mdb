@@ -1,4 +1,5 @@
 "use client"
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -45,7 +46,9 @@ const Book: React.FC<BookParams> = ({params : { title }}) => {
     return (
         <div className="flex flex-col gap-5 justify-center items-center h-screen">
             <div className="mb-10">
-                <Link href='/books' className="p-2 bg-gray-200">Back</Link>
+                <Button asChild>
+                    <Link href='/books'>Back</Link>
+                </Button>
             </div>
             <div className="grid gap-4">
                 <h1>Title:</h1>
