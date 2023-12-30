@@ -1,4 +1,5 @@
 "use client"
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -44,7 +45,9 @@ const Search = () => {
     return (
         <div className="flex flex-col gap-8 justify-center items-center h-screen">
             <div className="mb-10">
-                <Link href='/' className="p-2 bg-gray-200 rounded-lg hover:bg-gray-100">Back</Link>
+                <Button asChild>
+                    <Link href='/'>Back</Link>
+                </Button>
             </div>
             <div className="grid gap-10 ">
                 <h1>HELLO THIS IS SEARCH PAGE</h1>
@@ -60,7 +63,7 @@ const Search = () => {
                         <p>{result.publishYear}</p>
                     </div>
                     :
-                    <button className="p-2 bg-gray-200 hover:bg-gray-100 rounded-lg" onClick={handleSubmit}>Submit</button>
+                    <Button variant="outline" onClick={handleSubmit}>Submit</Button>
                 }
             </div>
         </div>
