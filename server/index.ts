@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "DELETE", "PUT"]
 }))
 
 app.get('/', (req: Request, res: Response) => {
@@ -50,14 +50,15 @@ app.post('/books/:title', (req: Request, res: Response) => {
 });
 
 app.post('/addBook', (req: Request, res: Response) => {
-    if (!req.body.title || !req.body.author || !req.body.publishYear) {
+    console.log(req.body);
+    if (!req.body.inputTitle || !req.body.inputAuthor || !req.body.inputPublishYear) {
         return res.send({ message: "Send all required fields: title, author, publishYear" });
     }
 
     const newBook = {
-        title: req.body.title,
-        author: req.body.author,
-        publishYear: req.body.publishYear,
+        title: req.body.inputTitle,
+        author: req.body.inputAuthor,
+        publishYear: req.body.inputPublishYear,
     };
 
     Book.create(newBook)
@@ -73,9 +74,9 @@ app.post('/addBook', (req: Request, res: Response) => {
 
 app.put('/updateBook/:title', (req: Request, res: Response) => {
     console.log(req.body);
-    if (!req.body.title || !req.body.author || !req.body.publishYear) {
-        return res.send({ message: "Send all required fields: title, author, publishYear" });
-    }
+    // if (!req.body.title || !req.body.author || !req.body.publishYear) {
+    //     return res.send({ message: "Send all required fields: title, author, publishYear" });
+    // }
 
     const updatedBook = {
         title: req.body.title,
@@ -102,7 +103,7 @@ app.delete('/deleteBook/:title', (req: Request, res: Response) => {
     Book.findOneAndDelete({ title: req.params.title })
         .then((data: IBook | null) => {
             if (data) {
-                res.send({ message: `Successfully Deleted ${data}` });
+                res.send({ message: `Successfully Deleted ${data}`, valid: true });
                 console.log("Successfully Deleted" + " " + req.params.title);
             } else {
                 res.send({ message: "Book not found" });
