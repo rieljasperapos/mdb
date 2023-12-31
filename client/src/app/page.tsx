@@ -7,6 +7,7 @@ export default function Home() {
       <ul className='flex gap-4'>
         <Link href='/books' className='cursor-pointer hover:text-orange-500 hover:underline'>Books</Link>
         <Link href='/search' className='cursor-pointer hover:text-orange-500 hover:underline'>Search</Link>
+        <Link href='/add'>Add</Link>
       </ul>
     </div>
   )
