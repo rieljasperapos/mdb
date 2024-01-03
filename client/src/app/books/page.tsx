@@ -128,22 +128,22 @@ const Books = () => {
             },
             body: JSON.stringify(requestBody)
         })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`Error ${res.status}`);
-            }
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Error ${res.status}`);
+                }
 
-            return res.json();
-        })
-        .then(data => {
-            if (data) {
-                console.log(data);
-                fetchBook();
-            }
-        })
-        .catch(err => {
-            console.error(err);
-        })
+                return res.json();
+            })
+            .then(data => {
+                if (data) {
+                    console.log(data);
+                    fetchBook();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            })
     }
 
     return (
@@ -198,7 +198,7 @@ const Books = () => {
                                             </DialogHeader>
                                             <div className="grid gap-4 py-4">
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="name" className="text-right">
+                                                    <Label htmlFor="title" className="text-right">
                                                         Title
                                                     </Label>
                                                     <Input
@@ -212,21 +212,21 @@ const Books = () => {
                                                     />
                                                 </div>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="username" className="text-right">
+                                                    <Label htmlFor="author" className="text-right">
                                                         Author
                                                     </Label>
                                                     <Input
-                                                        id="username"
+                                                        id="author"
                                                         defaultValue={book.author}
                                                         className="col-span-3"
                                                         onChange={(e) => {
                                                             const inputValue = e.target.value;
-                                                            setAuthor( inputValue )
+                                                            setAuthor(inputValue)
                                                         }}
                                                     />
                                                 </div>
                                                 <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="username" className="text-right">
+                                                    <Label htmlFor="year" className="text-right">
                                                         Year Published
                                                     </Label>
                                                     <Input
