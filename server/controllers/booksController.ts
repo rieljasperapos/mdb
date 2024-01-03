@@ -19,7 +19,15 @@ export const searchBookByTitle = (req: Request, res: Response) => {
     Book.findOne({ title: req.params.title })
         .then((data: IBook | null) => {
             if (data) {
-                res.send(data);
+                const imageDataURL = data.image ? `data:image/jpeg;base64,${data.image.toString('base64')}` : null;
+                const responseData = {
+                    title: data.title,
+                    author: data.author,
+                    publishYear: data.publishYear,
+                    description: data.description,
+                    image: imageDataURL,
+                }
+                res.send(responseData);
                 console.log("Book found");
                 console.log(data);
             } else {
@@ -39,10 +47,13 @@ export const addBook = (req: Request, res: Response) => {
         return res.send({message: "Send all required fields: title, author, publishYear", valid: false});
     }
 
+    console.log(req.file);
     const newBook = {
         title: req.body.inputTitle,
         author: req.body.inputAuthor,
-        publishYear: req.body.inputPublishYear,
+        publishYear: parseInt(req.body.inputPublishYear, 10),
+        description: req.body.inputDescription,
+        image: req.file ? req.file.buffer : undefined,
     };
 
     Book.create(newBook)
