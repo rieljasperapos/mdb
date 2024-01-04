@@ -3,18 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
+import useAlert from "@/hooks/useAlert";
 
 const Add = () => {
     const [inputTitle, setInputTitle] = useState("");
     const [inputAuthor, setInputAuthor] = useState("");
-    const [inputPublishYear, setInputPublishYear] = useState(0);
     const [inputDescription, setInputDescription] = useState("");
+    const [inputPublishYear, setInputPublishYear] = useState(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [alertSuccess, setAlertSuccess] = useState(false);
-    const [alertFailed, setAlertFailed] = useState(false);
+    // const [alertSuccess, setAlertSuccess] = useState<AlertType | null>(null);
+    // const [alertFailed, setAlertFailed] = useState<AlertType | null>(null);
+    const alerts = useAlert();
+
+    // showAlertSuccess({message: "SUCCESS", type: "success", status: true});
+    console.log(alerts.alertSuccess);
+    console.log(alerts.alertFailed);
+    console.log(inputDescription);
+    console.log(inputPublishYear);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -52,13 +60,18 @@ const Add = () => {
         .then(data => {
             console.log(data);
             if (data.valid) {
-                setAlertSuccess(true);
-                setAlertFailed(false);
+                alerts.showAlertSuccess({message: data.message, type: "success", status: true});
+                alerts.hideFailedAlert();
+                // setAlertSuccess({message: "The book is successfully added.", status: true});
+                // setAlertFailed(null);
                 setInputTitle("");
                 setInputAuthor("");
                 setInputPublishYear(0);
+                setInputDescription(""); 
             } else {
-                setAlertFailed(true);
+                alerts.showAlertFailed({message: data.message, type: 'failed', status: true});
+                alerts.hideSuccessAlert();
+                // setAlertFailed({message: "Please fill out missing fields.", status: true});
             }
         })
         .catch(err => {
@@ -67,22 +80,22 @@ const Add = () => {
     }
     
     return (
-        <div className="flex flex-col justify-center items-center h-screen">
-            {alertSuccess &&
+        <div className="flex flex-col justify-center items-center">
+            {alerts.alertSuccess.status &&
                 <Alert variant='success'>
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>Successful!</AlertTitle>
                     <AlertDescription>
-                        The book is successfully added.
+                        {alerts.alertSuccess.message}
                     </AlertDescription>
                 </Alert>
             }
-            {alertFailed &&
+            {alerts.alertFailed.status &&
                 <Alert variant='destructive'>
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>Failed!</AlertTitle>
                     <AlertDescription>
-                        Please fill out missing fields.
+                        {alerts.alertFailed.message}
                     </AlertDescription>
                 </Alert>}
             <div className="my-10">
@@ -102,11 +115,11 @@ const Add = () => {
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="year">Year Published <span className="text-red-500">*</span></Label>
-                    <Input type='number' id="year" placeholder="e.g 2016" onChange={(e) => setInputPublishYear(Number(e.target.value))} required />
+                    <Input value={inputPublishYear === 0 ? "" : inputPublishYear} type='number' id="year" placeholder="e.g 2016" onChange={(e) => setInputPublishYear(Number(e.target.value))} required />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="description">Description</Label>
-                    <Input type='text' id="year" onChange={(e) => setInputDescription(e.target.value)} />
+                    <Input value={inputDescription} type='text' id="description" onChange={(e) => setInputDescription(e.target.value)} />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="picture">Picture</Label>

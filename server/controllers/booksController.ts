@@ -44,7 +44,7 @@ export const searchBookByTitle = (req: Request, res: Response) => {
 export const addBook = (req: Request, res: Response) => {
     console.log(req.body);
     if (!req.body.inputTitle || !req.body.inputAuthor || !req.body.inputPublishYear) {
-        return res.send({message: "Send all required fields: title, author, publishYear", valid: false});
+        return res.send({message: "Please fill out missing fields.", valid: false});
     }
 
     console.log(req.file);
