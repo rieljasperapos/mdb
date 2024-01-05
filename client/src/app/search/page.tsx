@@ -45,7 +45,7 @@ const Search = () => {
     return (
         <div className="flex flex-col gap-8 justify-center items-center h-screen">
             <div className="mb-10">
-                <Button asChild>
+                <Button variant='ghost' asChild>
                     <Link href='/'>Back</Link>
                 </Button>
             </div>
@@ -63,7 +63,7 @@ const Search = () => {
                         <p>{result.publishYear}</p>
                     </div>
                     :
-                    <Button variant="outline" onClick={handleSubmit}>Submit</Button>
+                    <Button variant="default" onClick={handleSubmit}>Submit</Button>
                 }
             </div>
         </div>
