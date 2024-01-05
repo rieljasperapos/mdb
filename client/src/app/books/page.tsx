@@ -38,7 +38,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { RiDeleteBin6Line } from "react-icons/ri";
-
+import useAlert from "@/hooks/useAlert";
 
 interface Books {
     title: string;
@@ -48,7 +48,8 @@ interface Books {
 
 const Books = () => {
     const [books, setBooks] = useState<Books[] | null>(null);
-    const [alert, setAlert] = useState(false);
+    const alerts = useAlert();
+    // const [alert, setAlert] = useState(false);
     const [title, setTitle] = useState<string | null>(null);
     const [author, setAuthor] = useState<string | null>(null);
     const [publishYear, setPublishYear] = useState<number | null>(null);
@@ -102,7 +103,7 @@ const Books = () => {
             .then(data => {
                 if (data.valid) {
                     console.log(data);
-                    setAlert(true);
+                    alerts.showAlertSuccess({message: data.message, type: 'success', status: true});
                     fetchBook();
 
                 }
@@ -138,6 +139,7 @@ const Books = () => {
             .then(data => {
                 if (data) {
                     console.log(data);
+                    alerts.showAlertSuccess({message: data.message, type: 'success', status: true});
                     fetchBook();
                 }
             })
@@ -146,19 +148,21 @@ const Books = () => {
             })
     }
 
+    console.log(alerts.alertSuccess);
+
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-10">
-            {alert &&
+            {alerts.alertSuccess.status &&
                 <Alert variant='success'>
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>Successful!</AlertTitle>
                     <AlertDescription>
-                        The book is successfully deleted and is completely removed from the database.
+                        {alerts.alertSuccess.message}
                     </AlertDescription>
                 </Alert>
             }
             <div className="my-10">
-                <Button asChild>
+                <Button variant='ghost' asChild>
                     <Link href='/'>Back</Link>
                 </Button>
             </div>
