@@ -48,7 +48,7 @@ const Book: React.FC<BookParams> = ({params : { title }}) => {
     return (
         <div className="flex flex-col gap-5 justify-center items-center p-20">
             <div className="mb-10">
-                <Button asChild>
+                <Button variant='ghost' asChild>
                     <Link href='/books'>Back</Link>
                 </Button>
             </div>
