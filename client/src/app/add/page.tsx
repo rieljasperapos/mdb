@@ -3,10 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea";
 import useAlert from "@/hooks/useAlert";
+import { toast } from "@/components/ui/use-toast"
+
 
 const Add = () => {
     const [inputTitle, setInputTitle] = useState("");
@@ -14,15 +17,7 @@ const Add = () => {
     const [inputDescription, setInputDescription] = useState("");
     const [inputPublishYear, setInputPublishYear] = useState(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    // const [alertSuccess, setAlertSuccess] = useState<AlertType | null>(null);
-    // const [alertFailed, setAlertFailed] = useState<AlertType | null>(null);
     const alerts = useAlert();
-
-    // showAlertSuccess({message: "SUCCESS", type: "success", status: true});
-    console.log(alerts.alertSuccess);
-    console.log(alerts.alertFailed);
-    console.log(inputDescription);
-    console.log(inputPublishYear);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -60,18 +55,23 @@ const Add = () => {
         .then(data => {
             console.log(data);
             if (data.valid) {
-                alerts.showAlertSuccess({message: data.message, type: "success", status: true});
-                alerts.hideFailedAlert();
-                // setAlertSuccess({message: "The book is successfully added.", status: true});
-                // setAlertFailed(null);
+                toast({
+                    description: data.message
+                })
+                // alerts.showAlertSuccess({message: data.message, type: "success", status: true});
+                // alerts.hideFailedAlert();
                 setInputTitle("");
                 setInputAuthor("");
                 setInputPublishYear(0);
                 setInputDescription(""); 
             } else {
-                alerts.showAlertFailed({message: data.message, type: 'failed', status: true});
-                alerts.hideSuccessAlert();
-                // setAlertFailed({message: "Please fill out missing fields.", status: true});
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: data.message
+                })
+                // alerts.showAlertFailed({message: data.message, type: 'failed', status: true});
+                // alerts.hideSuccessAlert();
             }
         })
         .catch(err => {
@@ -80,8 +80,8 @@ const Add = () => {
     }
     
     return (
-        <div className="flex flex-col justify-center items-center">
-            {alerts.alertSuccess.status &&
+        <div className="flex flex-col justify-center items-center p-10">
+            {/* {alerts.alertSuccess.status &&
                 <Alert variant='success'>
                     <Terminal className="h-4 w-4" />
                     <AlertTitle>Successful!</AlertTitle>
@@ -97,9 +97,9 @@ const Add = () => {
                     <AlertDescription>
                         {alerts.alertFailed.message}
                     </AlertDescription>
-                </Alert>}
+                </Alert>} */}
             <div className="my-10">
-                <Button asChild>
+                <Button variant="ghost" asChild>
                     <Link href='/'>Back</Link>
                 </Button>
             </div>
@@ -119,14 +119,14 @@ const Add = () => {
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="description">Description</Label>
-                    <Input value={inputDescription} type='text' id="description" onChange={(e) => setInputDescription(e.target.value)} />
+                    <Textarea value={inputDescription} id="description" onChange={(e) => setInputDescription(e.target.value)} />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="picture">Picture</Label>
-                    <Input id="picture" type="file" onChange={handleFileChange} />
+                    <Input id="picture" type="file" onChange={handleFileChange} className="cursor-pointer" />
                 </div>
 
-                <Button variant='outline' onClick={handleClick}>Submit</Button>
+                <Button variant='default' onClick={handleClick}>Submit</Button>
 
             </div>
 
