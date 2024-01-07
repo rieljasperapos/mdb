@@ -82,7 +82,7 @@ export const updateBook = (req: Request, res: Response) => {
     Book.findOneAndUpdate({ title: req.params.title }, updatedBook, { new: true })
         .then((data: IBook | null) => {
             if (data) {
-                res.send(data);
+                res.send({message: `Updated ${data.title} successfully`});
                 console.log(`Updated ${req.params.title} Successfully`);
             } else {
                 res.send({ message: "Book not found" });
@@ -98,7 +98,7 @@ export const deleteBook = (req: Request, res: Response) => {
     Book.findOneAndDelete({ title: req.params.title })
         .then((data: IBook | null) => {
             if (data) {
-                res.send({ message: `Successfully Deleted ${data}`, valid: true });
+                res.send({ message: `Successfully Deleted ${data.title}`, valid: true });
                 console.log("Successfully Deleted" + " " + req.params.title);
             } else {
                 res.send({ message: "Book not found" });
