@@ -44,7 +44,7 @@ export const searchBookByTitle = (req: Request, res: Response) => {
 export const addBook = (req: Request, res: Response) => {
     console.log(req.body);
     if (!req.body.inputTitle || !req.body.inputAuthor || !req.body.inputPublishYear) {
-        return res.send({message: "Please fill out missing fields.", valid: false});
+        return res.send({ message: "Please fill out missing fields.", valid: false });
     }
 
     console.log(req.file);
@@ -58,7 +58,7 @@ export const addBook = (req: Request, res: Response) => {
 
     Book.create(newBook)
         .then((book: IBook) => {
-            res.send({message: `Successfully added ${book.title}`, valid: true});
+            res.send({ message: `Successfully added ${book.title}`, valid: true });
             console.log(`Book is successfully created ${book}`);
         })
         .catch((error: Error) => {
@@ -110,4 +110,41 @@ export const deleteBook = (req: Request, res: Response) => {
             res.send({ message: "Error in node" });
         });
 }
+
+export const addedBooksByMonth = (req: Request, res: Response) => {
+    const currentYear = new Date().getFullYear();
+    const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    Book.aggregate([
+        {
+            $match: {
+                createdAt: {
+                    $gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${currentYear + 1}-01-01T00:00:00.000Z`)
+                }
+            }
+        },
+        {
+            $group: {
+                _id: { $month: '$createdAt' },
+                bookCount: { $sum: 1 }
+            }
+        }
+    ])
+    .then(result => {
+        const booksByMonth = months.map((month, index) => ({
+            month,
+            bookCount: result.find((item) => item._id === index + 1)?.bookCount || 0
+        }));
+
+        res.send({ booksByMonth });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    });
+};
 
