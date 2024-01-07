@@ -13,5 +13,6 @@ router.post('/books/:title', booksController.searchBookByTitle);
 router.post('/addBook', upload.single('image'), booksController.addBook);
 router.put('/updateBook/:title', booksController.updateBook);
 router.delete('/deleteBook/:title', booksController.deleteBook);
+router.get('/bookCount', booksController.addedBooksByMonth);
 
 export = router;
