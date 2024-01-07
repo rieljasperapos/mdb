@@ -16,7 +16,7 @@ interface BookParams {
     }
 };
 
-const Book: React.FC<BookParams> = ({params : { title }}) => {
+const Book = ({params : { title }}: BookParams) => {
     const [bookData, setBookData] = useState<IBook | null>(null);
     
     useEffect(() => {
