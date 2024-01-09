@@ -1,7 +1,7 @@
 import { Input } from "@components/ui/input"
 import { Label } from "@components/ui/label"
-import { CardWrapper } from "./card-wrapper"
-import { Button } from "../ui/button"
+import { CardWrapper } from "@components/auth/card-wrapper"
+import { Button } from "@components/ui/button"
 
 export const RegisterForm = () => {
   return (
