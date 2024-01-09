@@ -5,14 +5,14 @@ import multer from 'multer';
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({
-    storage: storage,
+  storage: storage,
 });
 
 router.get('/books', booksController.getAllBook);
 router.post('/books/:title', booksController.searchBookByTitle);
-router.post('/addBook', upload.single('image'), booksController.addBook);
-router.put('/updateBook/:title', booksController.updateBook);
-router.delete('/deleteBook/:title', booksController.deleteBook);
-router.get('/bookCount', booksController.addedBooksByMonth);
+router.post('/add-book', upload.single('image'), booksController.addBook);
+router.put('/update-book/:title', booksController.updateBook);
+router.delete('/delete-book/:title', booksController.deleteBook);
+router.get('/book-count', booksController.addedBooksByMonth);
 
 export = router;
