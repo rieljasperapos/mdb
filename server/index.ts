@@ -5,6 +5,7 @@ import { Book } from './models/bookModel';
 import { IBook } from './schema/bookSchema';
 import { config } from 'dotenv';
 import booksRoutes from './routes/booksRoute'
+import userRoutes from './routes/userRoute'
 
 config();
 const port = process.env.PORT;
@@ -20,6 +21,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use(booksRoutes);
+app.use(userRoutes);
+
 
 // app.get('/books', (req: Request, res: Response) => {
 //     Book.find({})
