@@ -1,5 +1,5 @@
-import { Button } from "./ui/button"
-import { LoginButton } from "./auth/login-button"
+import { Button } from "@components/ui/button"
+import { LoginButton } from "@components/auth/login-button"
 
 export const UserButton = () => {
   return (
