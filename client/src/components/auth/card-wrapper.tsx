@@ -6,18 +6,25 @@ import {
 } from "@components/ui/card";
 import { Header } from "@components/auth/header";
 import { Socials } from "@components/auth/show-social";
-import { MorphButton } from "@components/auth/register-button";
+import { MorphButton } from "@components/auth/morph-button";
 import React from "react";
+
+type RegisterProps = {
+  register: string;
+  registerHref: string;
+};
+
+type LoginProps = {
+  login: string;
+  loginHref: string;
+};
 
 type CardWrapperProps = {
   children: React.ReactNode;
   headerTitle: string;
   headerLabel: string;
   showSocial?: boolean;
-} & (
-  | { register: string; registerHref: string }
-  | { login: string; loginHref: string }
-);
+} & (RegisterProps | LoginProps);
 
 // interface CardWrapperProps {
 //   children: React.ReactNode;
@@ -30,9 +37,15 @@ type CardWrapperProps = {
 //   loginHref: string;
 // }
 
-export const CardWrapper: React.FC<CardWrapperProps> = (props) => {
-  const { children, headerTitle, headerLabel, showSocial} = props;
-  
+export const CardWrapper = ({
+  children,
+  headerTitle,
+  headerLabel,
+  showSocial,
+  ...buttonProps
+}: CardWrapperProps) => {
+  // const { children, headerTitle, headerLabel, showSocial} = props;
+  const { register, registerHref, login, loginHref } = buttonProps as RegisterProps & LoginProps;
   return (
     <Card className="w-[400px] shadow-md">
       <CardHeader>
@@ -50,15 +63,15 @@ export const CardWrapper: React.FC<CardWrapperProps> = (props) => {
         </CardFooter>
       )}
       <CardFooter className="flex justify-center">
-        {'register' in props ? 
+        {'register' in buttonProps ? 
           <MorphButton 
-            label={props.register} 
-            href={props.registerHref} 
+            label={register} 
+            href={registerHref} 
           /> 
           : 
             <MorphButton 
-            label={props.login} 
-            href={props.loginHref} 
+            label={login} 
+            href={loginHref} 
             />
         }
         </CardFooter>

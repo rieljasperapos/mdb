@@ -1,8 +1,13 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
+<<<<<<< HEAD
 import booksRoutes from "./routes/booksRoute"
 import { db } from './db/dbconnect';
+=======
+import booksRoutes from './routes/booksRoute'
+import userRoutes from './routes/userRoute'
+>>>>>>> 1f6ea3d63467dfab6d9cbfd4516ccb4aea018d0f
 
 config();
 db();
@@ -19,6 +24,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use(booksRoutes);
+app.use(userRoutes);
+
 
 app.listen(port, () => {
   console.log(`App is listening to port ${port}`);
