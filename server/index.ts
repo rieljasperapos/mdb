@@ -15,13 +15,12 @@ app.use(cors({
   methods: ["GET", "POST", "DELETE", "PUT"]
 }))
 
-app.get('/', (req: Request, res: Response) => {
-  res.send("HELLO MONGODB");
-});
-
 app.use(booksRoutes);
 app.use(userRoutes);
 
+app.get('/', (req: Request, res: Response) => {
+  res.send("HELLO MONGODB");
+});
 
 app.listen(port, () => {
   console.log(`App is listening to port ${port}`);
