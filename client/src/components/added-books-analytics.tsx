@@ -58,7 +58,7 @@ export function Overview() {
     const [data, setData] = useState<any>({});
 
     useEffect(() => {
-        fetch('http://localhost:3001/bookCount')
+        fetch('http://localhost:3001/book-count')
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Error${res.status}`);
@@ -75,7 +75,7 @@ export function Overview() {
         })
     }, [])
 
-    console.log(data);
+    // console.log(data);
     return (
         <ResponsiveContainer width="100%" height={350}>
             <BarChart data={data}>

@@ -41,7 +41,7 @@ const Add = () => {
       formData.append("image", selectedFile);
     }
 
-    fetch("http://localhost:3001/addBook", {
+    fetch("http://localhost:3001/add-book", {
       method: "POST",
       body: formData,
     })

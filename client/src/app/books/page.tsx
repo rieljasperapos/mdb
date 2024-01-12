@@ -86,7 +86,7 @@ const Books = () => {
   const handleClick = (book: string) => {
     console.log(book);
     console.log('test');
-    fetch(`http://localhost:3001/deleteBook/${book}`, {
+    fetch(`http://localhost:3001/delete-book/${book}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json'
@@ -102,7 +102,11 @@ const Books = () => {
       .then(data => {
         if (data.valid) {
           console.log(data);
-          alerts.showAlertSuccess({ message: data.message, type: 'success', status: true });
+          alerts.showAlertSuccess({
+            message: data.message, 
+            type: 'success', 
+            status: true 
+          });
           fetchBook();
 
         }
@@ -121,7 +125,7 @@ const Books = () => {
 
     console.log(requestBody.title);
 
-    fetch(`http://localhost:3001/updateBook/${book.title}`, {
+    fetch(`http://localhost:3001/update-book/${book.title}`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
@@ -138,7 +142,11 @@ const Books = () => {
       .then(data => {
         if (data) {
           console.log(data);
-          alerts.showAlertSuccess({ message: data.message, type: 'success', status: true });
+          alerts.showAlertSuccess({
+            message: data.message, 
+            type: 'success', 
+            status: true 
+        });
           fetchBook();
         }
       })
