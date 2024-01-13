@@ -1,50 +1,53 @@
 import { useState } from "react";
 
 type AlertType = {
-    message: string
-    type: string
-    status: boolean
+  message: string
+  type: string
+  status: boolean
 }
 
 const initialAlert = {
-    message: "",
-    type: "",
-    status: false,
+  message: "",
+  type: "",
+  status: false,
 }
 
 const useAlert = () => {
-    const [alertSuccess, setAlertSuccess] = useState<AlertType>(initialAlert);
-    const [alertFailed, setAlertFailed] = useState<AlertType>(initialAlert);
+  const [alertSuccess, setAlertSuccess] = useState<AlertType>(initialAlert);
+  const [alertFailed, setAlertFailed] = useState<AlertType>(initialAlert);
 
-    const showAlertSuccess = (props: AlertType) => {
-        if (props.type === "success") {
-            setAlertSuccess((prevAlert) => ({
-                ...prevAlert,
-                message: props.message,
-                type: props.type,
-                status: props.status,
-            }));
-
-        }
-    };
-
-    const showAlertFailed = (props: AlertType) => {
-        if (props.type === 'failed')
-        setAlertFailed({message: props.message, type: props.type, status: props.status});
+  const showAlertSuccess = (props: AlertType) => {
+    if (props.type === "success") {
+      setAlertSuccess((prevAlert) => ({
+        ...prevAlert,
+        message: props.message,
+        type: props.type,
+        status: props.status,
+      }));
 
     }
+  };
 
-    const hideSuccessAlert = () => {
-        setAlertSuccess(initialAlert);
-    }
+  const showAlertFailed = (props: AlertType) => {
+    if (props.type === 'failed')
+      setAlertFailed({ 
+        message: props.message, 
+        type: props.type, 
+        status: props.status 
+      });
+  }
 
-    const hideFailedAlert = () => {
-        setAlertFailed(initialAlert);
-    }
+  const hideSuccessAlert = () => {
+    setAlertSuccess(initialAlert);
+  }
 
-    // setAlertSuccess({message: props?.message, status: props?.status});
+  const hideFailedAlert = () => {
+    setAlertFailed(initialAlert);
+  }
 
-    return { alertSuccess, alertFailed, showAlertSuccess, showAlertFailed, hideSuccessAlert, hideFailedAlert };
+  // setAlertSuccess({message: props?.message, status: props?.status});
+
+  return { alertSuccess, alertFailed, showAlertSuccess, showAlertFailed, hideSuccessAlert, hideFailedAlert };
 }
 
 export default useAlert;
