@@ -17,8 +17,12 @@ import { Input } from "@components/ui/input"
 import { Button } from "@components/ui/button"
 import { FormError } from "@components/form-error"
 import { FormSuccess } from "@components/form-success"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
 
 export const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -28,8 +32,52 @@ export const LoginForm = () => {
   })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
+    fetch("http://localhost:3001/login-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify( values )
+    })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      if (data.status) {
+        router.push("/dashboard");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    })
   }
+
+  useEffect(() => {
+    fetch("http://localhost:3001/auth", {
+      credentials: "include"
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error ${res.status}`)
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.status) {
+          router.push("/dashboard")
+        } else {
+          router.push("/auth/login")
+        }
+      })
+      .catch((err: Error) => {
+        console.error(err);
+      })
+  })
 
   return (
     <div className="flex justify-center items-center my-12">
