@@ -33,7 +33,7 @@ export const RegisterForm = () => {
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     // TODO: API Fetch
-    fetch("http://localhost:3001/add-user", {
+    fetch("http://localhost:3001/register-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -49,7 +49,6 @@ export const RegisterForm = () => {
     })
     .then((data) => {
       if (data.status) {
-        console.log(data);
         setSuccess(data.message);
       } else {
         setError(data.message);
