@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
-import { config } from 'dotenv';
-
-config();
+import { config } from '../util/config.util';
 
 export const db = () => {
   mongoose
-  .connect(process.env.MONGODB_URL as string)
+  .connect(config.MONGODB_URL as string)
   .then(() => {
     console.log('Connected Successfully to the database');
   })
