@@ -1,15 +1,9 @@
-import { IUser } from "../schema/userSchema";
-import { User } from "../models/userModel";
-import { NextFunction, Request, Response } from "express";
+import { IUser } from "../schema/user.schema";
+import { User } from "../models/user.models";
+import { Request, Response } from "express";
 import bcrypt from 'bcryptjs'
-import jwt, { VerifyErrors } from 'jsonwebtoken'
-import { config } from 'dotenv';
-
-interface CustomRequest extends Request {
-  user?: any
-};
-
-config();
+import jwt from 'jsonwebtoken'
+import { config } from '../util/config.util';
 
 export const getUsers = (req: Request, res: Response) => {
   console.log(req);
@@ -45,7 +39,7 @@ export const loginUser = (req: Request, res: Response) => {
             email: data.email
           }
           // TO DO: JWT Sign
-          const token = jwt.sign({ user }, process.env.SECRET_KEY as string, {expiresIn: '1h'});
+          const token = jwt.sign({ user }, config.SECRET_KEY as string, {expiresIn: '1h'});
           console.log(token);
           res.cookie('accessToken', token, {maxAge: 3600000, httpOnly: true})
           res.send({
@@ -119,28 +113,4 @@ export const registerUser = (req: Request, res: Response) => {
       }
     })
   });
-}
-
-export const authenticate = (req: CustomRequest, res: Response, next: NextFunction) => {
-  console.log("AUTHENTICATE COOKIE: ", req.cookies.accessToken);
-  console.log(req.cookies);
-  const authToken = req.cookies.accessToken;
-
-  if (!authToken) {
-    res.send({
-      message: "Unauthorized Access"
-    });
-  } else {
-    jwt.verify(authToken, process.env.SECRET_KEY as string, (err: VerifyErrors | null, data: any) => {
-      if (err) {
-        res.send({
-          message: "Invalid Token",
-          status: false
-        });
-      } else {
-        req.user = data;
-        next();
-      }
-    })
-  }
 }
