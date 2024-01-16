@@ -4,10 +4,10 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Textarea } from "@components/ui/textarea";
 import { toast } from "@components/ui/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const Add = () => {
@@ -16,8 +16,6 @@ const Add = () => {
   const [inputDescription, setInputDescription] = useState("");
   const [inputPublishYear, setInputPublishYear] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [authenticated, setAuthenticated] = useState(false);
-  const router = useRouter();
   const { data: session, status } = useSession();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,25 +33,6 @@ const Add = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3001/auth", {
-  //     credentials: "include"
-  //   })
-  //   .then((res) => {
-  //     if (!res.ok) {
-  //       throw new Error(`Error ${res.status}`)
-  //     }
-  //     return res.json();
-  //   })
-  //   .then((data) => {
-  //     if (data.status) {
-  //       setAuthenticated(true);
-  //     }else {
-  //       router.push("/auth/login")
-  //     }
-  //   })
-  // })
-
   const handleClick = () => {
     const formData = new FormData();
     formData.append("inputTitle", inputTitle);
@@ -67,7 +46,6 @@ const Add = () => {
 
     fetch("http://localhost:3001/add-book", {
       method: "POST",
-      // credentials: "include",
       body: formData,
     })
       .then((res) => {
@@ -102,9 +80,6 @@ const Add = () => {
   if (!session?.user) {
     redirect("/auth/login")
   }
-  // if (!authenticated) {
-  //   return null;
-  // }
 
   return (
     <div className="flex flex-col justify-center items-center p-10">

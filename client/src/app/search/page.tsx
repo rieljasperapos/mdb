@@ -12,7 +12,6 @@ interface Book {
 const Search = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<Book | null>(null);
-  console.log(input);
 
   const handleSubmit = () => {
     fetch(`http://localhost:3001/books/${input}`, {
@@ -31,17 +30,14 @@ const Search = () => {
       })
       .then(data => {
         if (data) {
-          console.log(data);
           setResult(data);
         }
       })
       .catch(err => {
         console.error(err);
       })
-
-    console.log(result);
-
   }
+  
   return (
     <div className="flex flex-col gap-8 justify-center items-center h-screen">
       <div className="mb-10">
