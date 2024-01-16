@@ -2,58 +2,6 @@
 import { useEffect, useState } from "react"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
-// const data = [
-//     {
-//         name: "Jan",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Feb",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Mar",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Apr",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "May",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Jun",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Jul",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Aug",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Sep",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Oct",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-//     {
-//         name: "Nov",
-//         total: Math.floor(Math.random() * 5000) + 10,
-//     },
-// ]
-
-// type chartType = {
-//     month: string
-//     bookCount: number;
-// }
-
 export function Overview() {
     const [data, setData] = useState<any>({});
 
@@ -68,14 +16,12 @@ export function Overview() {
         })
         .then((data) => {
             setData(data.booksByMonth);
-            // console.log(data.booksByMonth);
         })
         .catch(err => {
             console.error(err);
         })
     }, [])
 
-    // console.log(data);
     return (
         <ResponsiveContainer width="100%" height={350}>
             <BarChart data={data}>
