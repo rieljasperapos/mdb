@@ -1,5 +1,5 @@
-import { Book } from "../models/bookModel";
-import { IBook } from "../schema/bookSchema";
+import { Book } from "../models/book.models";
+import { IBook } from "../schema/book.schema";
 import { Request, Response } from "express";
 
 

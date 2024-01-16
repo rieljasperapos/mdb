@@ -1,5 +1,6 @@
 import express from 'express'
-import * as booksController from '../controllers/booksController'
+import * as booksController from '../controllers/books.controller.'
+import { authenticate } from '../middleware/auth.middleware';
 import multer from 'multer';
 
 const router = express.Router();

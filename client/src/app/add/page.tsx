@@ -4,9 +4,11 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "@components/ui/textarea";
 import { toast } from "@components/ui/use-toast";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Add = () => {
   const [inputTitle, setInputTitle] = useState("");
@@ -14,6 +16,9 @@ const Add = () => {
   const [inputDescription, setInputDescription] = useState("");
   const [inputPublishYear, setInputPublishYear] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,12 +28,31 @@ const Add = () => {
       allowedTypes.includes(file.type)
         ? setSelectedFile(file)
         : alert(
-            "Invalid file type. Please select an image (JPEG, PNG, or GIF)."
-          );
+          "Invalid file type. Please select an image (JPEG, PNG, or GIF)."
+        );
     } else {
       setSelectedFile(null);
     }
   };
+
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/auth", {
+  //     credentials: "include"
+  //   })
+  //   .then((res) => {
+  //     if (!res.ok) {
+  //       throw new Error(`Error ${res.status}`)
+  //     }
+  //     return res.json();
+  //   })
+  //   .then((data) => {
+  //     if (data.status) {
+  //       setAuthenticated(true);
+  //     }else {
+  //       router.push("/auth/login")
+  //     }
+  //   })
+  // })
 
   const handleClick = () => {
     const formData = new FormData();
@@ -41,8 +65,9 @@ const Add = () => {
       formData.append("image", selectedFile);
     }
 
-    fetch("http://localhost:3001/addBook", {
+    fetch("http://localhost:3001/add-book", {
       method: "POST",
+      // credentials: "include",
       body: formData,
     })
       .then((res) => {
@@ -74,75 +99,88 @@ const Add = () => {
       });
   };
 
+  if (!session?.user) {
+    redirect("/auth/login")
+  }
+  // if (!authenticated) {
+  //   return null;
+  // }
+
   return (
     <div className="flex flex-col justify-center items-center p-10">
-      <div className="my-10">
-        <Button variant="ghost" asChild>
-          <Link href="/">Back</Link>
-        </Button>
-      </div>
-      <div className="grid gap-10">
-        <h1>This is add page</h1>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="title">
-            Title <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            value={inputTitle}
-            type="text"
-            id="title"
-            placeholder="e.g Atomic Habits"
-            onChange={(e) => setInputTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="author">
-            Author <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            value={inputAuthor}
-            type="text"
-            id="author"
-            placeholder="e.g James Clear"
-            onChange={(e) => setInputAuthor(e.target.value)}
-            required
-          />
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="year">
-            Year Published <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            value={inputPublishYear === 0 ? "" : inputPublishYear}
-            type="number"
-            id="year"
-            placeholder="e.g 2016"
-            onChange={(e) => setInputPublishYear(Number(e.target.value))}
-            required
-          />
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            value={inputDescription}
-            id="description"
-            onChange={(e) => setInputDescription(e.target.value)}
-          />
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="picture">Picture</Label>
-          <Input
-            id="picture"
-            type="file"
-            onChange={handleFileChange}
-            className="cursor-pointer"
-          />
-        </div>
-        <Button variant="default" onClick={handleClick}>
-          Submit
-        </Button>
-      </div>
+      {status === "authenticated" ?
+        <>
+          <div className="my-10">
+            <Button variant="ghost" asChild>
+              <Link href="/">Back</Link>
+            </Button>
+          </div>
+          <div className="grid gap-10">
+            <h1>This is add page</h1>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="title">
+                Title <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={inputTitle}
+                type="text"
+                id="title"
+                placeholder="e.g Atomic Habits"
+                onChange={(e) => setInputTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="author">
+                Author <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={inputAuthor}
+                type="text"
+                id="author"
+                placeholder="e.g James Clear"
+                onChange={(e) => setInputAuthor(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="year">
+                Year Published <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={inputPublishYear === 0 ? "" : inputPublishYear}
+                type="number"
+                id="year"
+                placeholder="e.g 2016"
+                onChange={(e) => setInputPublishYear(Number(e.target.value))}
+                required
+              />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                value={inputDescription}
+                id="description"
+                onChange={(e) => setInputDescription(e.target.value)}
+              />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="picture">Picture</Label>
+              <Input
+                id="picture"
+                type="file"
+                onChange={handleFileChange}
+                className="cursor-pointer"
+              />
+            </div>
+            <Button variant="default" onClick={handleClick}>
+              Submit
+            </Button>
+          </div>
+        </>
+        :
+        <p>Loading...</p>
+      }
     </div>
   );
 };
