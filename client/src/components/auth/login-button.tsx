@@ -14,7 +14,6 @@ export const LoginButton = ({
 } : LoginButtonProps) => {
   const router = useRouter();
   const handleClick = () => {
-    console.log("CLICKED LOGIN");
     router.push("/auth/login");
   }
 

@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
+import { signOut, useSession } from "next-auth/react"
+import { Skeleton } from "./ui/skeleton"
 
 interface IUser {
   name: string;
@@ -27,69 +29,80 @@ export const UserButton = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState<IUser>(initialUser);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
-  useEffect(() => {
-    fetch("http://localhost:3001/auth", {
-      credentials: "include"
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error ${res.status}`)
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data.status) {
-          console.log(data.data.user);
-          console.log(data.message);
-          setUser(data.data.user)
-          setAuthenticated(true);
-        }
-      })
-  }, [])
+  // const checkAuthentication = () => {
+  //   fetch("http://localhost:3001/auth", {
+  //     credentials: "include"
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error(`Error ${res.status}`)
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       if (data.status) {
+  //         setUser(data.data.user)
+  //         setAuthenticated(true);
+  //       }
+  //     })
+  // }
 
-  const onClick = () => {
-    fetch("http://localhost:3001/logout", {
-      credentials: "include"
-    })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error (`Error ${res.status}`)
-      }
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     setAuthenticated(true);
+  //   } else {
+  //     setAuthenticated(false);
+  //   }
+  //   // checkAuthentication();
+  // }, [])
 
-      return res.json();
-    })
-    .then((data) => {
-      if (data) {
-        router.push("/auth/login")
-        console.log(data);
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+  // const onClick = () => {
+  //   fetch("http://localhost:3001/logout", {
+  //     credentials: "include"
+  //   })
+  //   .then((res) => {
+  //     if (!res.ok) {
+  //       throw new Error (`Error ${res.status}`)
+  //     }
+
+  //     return res.json();
+  //   })
+  //   .then((data) => {
+  //     if (data) {
+  //       router.push("/auth/login")
+  //       console.log(data);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.error(err)
+  //   })
+  // }
+
+  if (status === "loading") {
+    return <Skeleton className="h-10 w-10 rounded-full"></Skeleton>
   }
 
-  console.log(user);
   return (
     <>
-      {authenticated ?
+      {session?.user ?
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar>
+              <Avatar className="cursor-pointer">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback></AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+              <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>{user.email}</DropdownMenuItem>
+              <DropdownMenuItem>{session.user.email}</DropdownMenuItem>
               <DropdownMenuItem>
                 <Button 
                   variant="ghost"
-                  onClick={onClick}
+                  onClick={() => signOut()}
                   >
                   Sign out
                 </Button>
