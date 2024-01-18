@@ -20,5 +20,6 @@ router.post('/get-book-user', booksController.getBookUser);
 router.post('/book-count-user', booksController.addedBooksByMonthUser);
 router.post('/books-user/:title', booksController.searchBookByTitleUser);
 router.put('/update-book-user/:title', booksController.updateBookUser);
+router.delete('/delete-book-user/:title', booksController.deleteBookUser);
 
 export = router;

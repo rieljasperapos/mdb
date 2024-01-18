@@ -217,6 +217,40 @@ export const updateBook = (req: Request, res: Response) => {
     });
 }
 
+export const deleteBookUser = (req: Request, res: Response) => {
+  console.log(req.body);
+  User.findOne({ email: req.body.email })
+    .then((user: IUser | null) => {
+      const matchedBook: IBook = user?.books.find((books: IBook) => books.title === req.params.title);
+      if (matchedBook) {
+        User.updateOne({ email: user?.email }, { $pull: { books: matchedBook } })
+          .then(() => {
+            res.send({
+              message: `Successfully deleted a book with the title of ${matchedBook.title}`,
+              valid: true
+            });
+          })
+          .catch((err: Error) => {
+            res.send({
+              message: "Error deleting a book",
+              valid: false
+            })
+          })
+      } else {
+        res.send({
+          message: "Book not found",
+          valid: false
+        });
+      }
+    })
+    .catch(() => {
+      res.send({
+        message: "User not currently logged in",
+        valid: false
+      });
+    })
+}
+
 export const deleteBook = (req: Request, res: Response) => {
   Book.findOneAndDelete({ title: req.params.title })
     .then((data: IBook | null) => {
