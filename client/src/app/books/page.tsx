@@ -48,6 +48,7 @@ interface Books {
 };
 
 const Books = () => {
+  // TODO: Compress books input fields to object
   const [books, setBooks] = useState<Books[] | null>(null);
   const [title, setTitle] = useState<string | null>(null);
   const [author, setAuthor] = useState<string | null>(null);
@@ -112,11 +113,12 @@ const Books = () => {
   }, [status])
 
   const handleClick = (book: string) => {
-    fetch(`http://localhost:3001/delete-book/${book}`, {
+    fetch(`http://localhost:3001/delete-book-user/${book}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({ email: session?.user?.email })
     })
       .then(res => {
         if (!res.ok) {
@@ -133,7 +135,6 @@ const Books = () => {
             status: true
           });
           fetchBook();
-
         }
       })
       .catch(err => {
@@ -193,7 +194,7 @@ const Books = () => {
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center p-10">
-      {status === "authenticated" ?
+      {status === "authenticated" ? (
         <>
           {alerts.alertSuccess.status &&
             <Alert variant='success'>
@@ -335,9 +336,9 @@ const Books = () => {
             }
           </div>
         </>
-        :
+      ):(
         <p>Loading...</p>
-      }
+      )}
     </div>
   )
 }
