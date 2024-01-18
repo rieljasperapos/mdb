@@ -10,6 +10,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const Add = () => {
+  // TODO: Compress books input fields to object
   const [inputTitle, setInputTitle] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
   const [inputDescription, setInputDescription] = useState("");
@@ -33,6 +34,13 @@ const Add = () => {
       setSelectedFile(null);
     }
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/login");
+    }
+
+  }, [status])
 
   // useEffect(() => {
   //   fetch("http://localhost:3001/auth", {
@@ -115,7 +123,7 @@ const Add = () => {
 
   return (
     <div className="flex flex-col justify-center items-center p-10">
-      {status === "authenticated" ?
+      {status === "authenticated" ? (
         <>
           <div className="my-10">
             <Button variant="ghost" asChild>
@@ -185,9 +193,9 @@ const Add = () => {
             </Button>
           </div>
         </>
-        :
+      ):(
         <p>Loading...</p>
-      }
+      )}
     </div>
   );
 };

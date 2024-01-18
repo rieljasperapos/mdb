@@ -86,12 +86,12 @@ export const UserButton = () => {
 
   return (
     <>
-      {session?.user ?
+      {session?.user ? (
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={session.user.image ? session.user.image : "https://github.com/shadcn.png"} />
                 <AvatarFallback></AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
@@ -110,10 +110,11 @@ export const UserButton = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        :
+      ):(
         <LoginButton>
           <Button>Sign in</Button>
-        </LoginButton>}
+        </LoginButton>
+      )}
     </>
   )
 }

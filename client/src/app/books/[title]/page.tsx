@@ -54,11 +54,9 @@ const Book = ({ params: { title } }: BookParams) => {
     fetchBookContent();
   }, [status])
 
-  console.log(bookData);
-
   return (
     <div className="flex flex-col gap-5 justify-center items-center p-20">
-      {status === "authenticated" ?
+      {status === "authenticated" ? (
         <>
           <div className="mb-10">
             <Button variant='ghost' asChild>
@@ -89,9 +87,9 @@ const Book = ({ params: { title } }: BookParams) => {
             }
           </div>
         </>
-        :
-
-        <p>Loading...</p>}
+      ):(
+        <p>Loading...</p>
+      )}
     </div>
   )
 }

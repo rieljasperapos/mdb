@@ -100,7 +100,7 @@ export const LoginForm = () => {
 
   return (
     <div className="flex justify-center items-center my-12">
-      {status === "unauthenticated" ?
+      {status === "unauthenticated" ? (
         <>
           <CardWrapper
             headerTitle="Login"
@@ -162,11 +162,11 @@ export const LoginForm = () => {
             </Form>
           </CardWrapper>
         </>
-        :
+      ):(
         <div>
           <p>Loading...</p>
         </div>
-      }
+      )}
     </div>
   )
 }

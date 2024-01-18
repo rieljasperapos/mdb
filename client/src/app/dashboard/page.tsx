@@ -44,7 +44,7 @@ const Dashboard = () => {
 
   return (
     <div className='flex flex-col justify-center items-center p-10'>
-      {status === "authenticated" ? 
+      {status === "authenticated" ? (
         <>
         <Header />
         <div className='flex flex-col w-96 border p-6 my-10'>
@@ -56,9 +56,9 @@ const Dashboard = () => {
           </div>
         </div>
         </>
-        :
+      ):(
         <p>Loading...</p>
-      }
+      )}
 
     </div>
   );
