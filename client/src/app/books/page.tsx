@@ -57,8 +57,18 @@ const Books = () => {
   const alerts = useAlert();
   const router = useRouter();
 
+  console.log(session?.user?.email);
+  console.log(status);
+
   const fetchBook = () => {
-    fetch('http://localhost:3001/books')
+    console.log("TEST");
+    fetch('http://localhost:3001/get-book-user', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: session?.user?.email }),
+    })
       .then(res => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
@@ -66,6 +76,7 @@ const Books = () => {
         return res.json();
       })
       .then((data: Books[]) => {
+        console.log(data);
         if (data) {
           setBooks(data);
         }
@@ -78,6 +89,9 @@ const Books = () => {
   // if (session?.user)
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/login");
+    }
     // fetch("http://localhost:3001/auth", {
     //   credentials: "include"
     // })
@@ -95,7 +109,7 @@ const Books = () => {
     //     }
     //   })
     fetchBook();
-  }, [])
+  }, [status])
 
   const handleClick = (book: string) => {
     fetch(`http://localhost:3001/delete-book/${book}`, {
@@ -129,12 +143,13 @@ const Books = () => {
 
   const handleSaveChangesClick = (book: Books) => {
     const requestBody = {
+      email: session?.user?.email,
       title: title || undefined,
       author: author || undefined,
       publishYear: (publishYear !== null && publishYear !== 0) ? publishYear : undefined,
     };
 
-    fetch(`http://localhost:3001/update-book/${book.title}`, {
+    fetch(`http://localhost:3001/update-book-user/${book.title}`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
@@ -149,13 +164,19 @@ const Books = () => {
         return res.json();
       })
       .then(data => {
-        if (data) {
+        if (data.valid) {
           alerts.showAlertSuccess({
             message: data.message,
             type: 'success',
             status: true
           });
           fetchBook();
+        } else {
+          alerts.showAlertFailed({
+            message: data.message,
+            type: 'failed',
+            status: true
+          });
         }
       })
       .catch(err => {
@@ -163,9 +184,9 @@ const Books = () => {
       })
   }
 
-  if (!session?.user) {
-    redirect("/auth/login");
-  }
+  // if (!session?.user) {
+  //   redirect("/auth/login");
+  // }
   // if (!authenticated) {
   //   return null;
   // }
@@ -180,6 +201,15 @@ const Books = () => {
               <AlertTitle>Successful!</AlertTitle>
               <AlertDescription>
                 {alerts.alertSuccess.message}
+              </AlertDescription>
+            </Alert>
+          }
+          {alerts.alertFailed.status &&
+            <Alert variant="destructive">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Failed!</AlertTitle>
+              <AlertDescription>
+                {alerts.alertFailed.message}
               </AlertDescription>
             </Alert>
           }

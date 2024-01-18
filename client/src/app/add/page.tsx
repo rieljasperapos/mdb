@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
@@ -55,7 +54,10 @@ const Add = () => {
   // })
 
   const handleClick = () => {
+    const email = session?.user?.email;
+    console.log(email);
     const formData = new FormData();
+    formData.append("email", email as string);
     formData.append("inputTitle", inputTitle);
     formData.append("inputAuthor", inputAuthor);
     formData.append("inputPublishYear", inputPublishYear.toString());
@@ -65,10 +67,12 @@ const Add = () => {
       formData.append("image", selectedFile);
     }
 
-    fetch("http://localhost:3001/add-book", {
+    console.log(formData);
+
+    fetch("http://localhost:3001/add-book-user", {
       method: "POST",
       // credentials: "include",
-      body: formData,
+      body: formData
     })
       .then((res) => {
         if (res.ok) {
@@ -99,9 +103,12 @@ const Add = () => {
       });
   };
 
-  if (!session?.user) {
-    redirect("/auth/login")
-  }
+  console.log(session?.user);
+  console.log(status);
+
+  // if (!session?.user) {
+  //   redirect("/auth/login")
+  // }
   // if (!authenticated) {
   //   return null;
   // }

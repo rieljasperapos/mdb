@@ -1,17 +1,24 @@
 "use client"
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
 export function Overview() {
     const [data, setData] = useState<any>({});
+    const { data: session, status } = useSession();
 
     useEffect(() => {
-        fetch('http://localhost:3001/book-count')
+        fetch('http://localhost:3001/book-count-user', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: session?.user?.email })
+        })
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Error${res.status}`);
             }
-            
             return res.json();
         })
         .then((data) => {
@@ -20,7 +27,9 @@ export function Overview() {
         .catch(err => {
             console.error(err);
         })
-    }, [])
+    }, [status])
+
+    console.log(data);
 
     return (
         <ResponsiveContainer width="100%" height={350}>
