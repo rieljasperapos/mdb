@@ -8,15 +8,20 @@ import { Textarea } from "@components/ui/textarea";
 import { toast } from "@components/ui/use-toast";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { IBook, initialBooksInput } from "@/types/book-type";
 
 const Add = () => {
   // TODO: Compress books input fields to object
-  const [inputTitle, setInputTitle] = useState("");
-  const [inputAuthor, setInputAuthor] = useState("");
-  const [inputDescription, setInputDescription] = useState("");
-  const [inputPublishYear, setInputPublishYear] = useState(0);
+  const [booksInput, setBooksInput] = useState<IBook>(initialBooksInput);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { data: session, status } = useSession();
+
+  const handleChange = (field: keyof IBook, value: any) => {
+    setBooksInput((prevBook) => ({
+      ...prevBook,
+      [field]: value,
+    }));
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,17 +42,16 @@ const Add = () => {
     if (status === "unauthenticated") {
       redirect("/auth/login");
     }
-
   }, [status])
     
   const handleClick = () => {
     const email = session?.user?.email;
     const formData = new FormData();
     formData.append("email", email as string);
-    formData.append("inputTitle", inputTitle);
-    formData.append("inputAuthor", inputAuthor);
-    formData.append("inputPublishYear", inputPublishYear.toString());
-    formData.append("inputDescription", inputDescription);
+    formData.append("inputTitle", booksInput.title);
+    formData.append("inputAuthor", booksInput.author);
+    formData.append("inputPublishYear", booksInput.publishYear.toString());
+    formData.append("inputDescription", booksInput.description);
 
     if (selectedFile) {
       formData.append("image", selectedFile);
@@ -69,10 +73,7 @@ const Add = () => {
           toast({
             description: data.message,
           });
-          setInputTitle("");
-          setInputAuthor("");
-          setInputPublishYear(0);
-          setInputDescription("");
+          setBooksInput(initialBooksInput);
         } else {
           toast({
             variant: "destructive",
@@ -102,11 +103,11 @@ const Add = () => {
                 Title <span className="text-red-500">*</span>
               </Label>
               <Input
-                value={inputTitle}
+                value={booksInput.title}
                 type="text"
                 id="title"
                 placeholder="e.g Atomic Habits"
-                onChange={(e) => setInputTitle(e.target.value)}
+                onChange={(e) => handleChange('title', e.target.value)}
                 required
               />
             </div>
@@ -115,11 +116,11 @@ const Add = () => {
                 Author <span className="text-red-500">*</span>
               </Label>
               <Input
-                value={inputAuthor}
+                value={booksInput.author}
                 type="text"
                 id="author"
                 placeholder="e.g James Clear"
-                onChange={(e) => setInputAuthor(e.target.value)}
+                onChange={(e) => handleChange('author', e.target.value)}
                 required
               />
             </div>
@@ -128,20 +129,20 @@ const Add = () => {
                 Year Published <span className="text-red-500">*</span>
               </Label>
               <Input
-                value={inputPublishYear === 0 ? "" : inputPublishYear}
+                value={booksInput.publishYear === 0 ? "" : booksInput.publishYear}
                 type="number"
                 id="year"
                 placeholder="e.g 2016"
-                onChange={(e) => setInputPublishYear(Number(e.target.value))}
+                onChange={(e) => handleChange('publishYear', e.target.value)}
                 required
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="description">Description</Label>
               <Textarea
-                value={inputDescription}
+                value={booksInput.description}
                 id="description"
-                onChange={(e) => setInputDescription(e.target.value)}
+                onChange={(e) => handleChange('description', e.target.value)}
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">

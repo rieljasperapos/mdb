@@ -156,6 +156,7 @@ export const updateBookUser = (req: Request, res: Response) => {
             title: req.body.title || user.books[matchedBookIndex].title,
             author: req.body.author || user.books[matchedBookIndex].author,
             publishYear: req.body.publishYear || user.books[matchedBookIndex].publishYear,
+            description: req.body.description || user.books[matchedBookIndex].description,
           };
           user.books[matchedBookIndex] = updatedBook;
           User.updateOne(

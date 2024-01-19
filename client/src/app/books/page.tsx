@@ -40,19 +40,13 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import useAlert from "@/hooks/useAlert";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-interface Books {
-  title: string;
-  author: string;
-  publishYear: number;
-};
+import { IBook, initialBooksInput } from "@/types/book-type";
+import { Textarea } from "@/components/ui/textarea";
 
 const Books = () => {
   // TODO: Compress books input fields to object
-  const [books, setBooks] = useState<Books[] | null>(null);
-  const [title, setTitle] = useState<string | null>(null);
-  const [author, setAuthor] = useState<string | null>(null);
-  const [publishYear, setPublishYear] = useState<number | null>(null);
+  const [books, setBooks] = useState<IBook[] | null>(null);
+  const [booksInput, setBooksInput] = useState<IBook>(initialBooksInput);
   const { data: session, status } = useSession();
   const alerts = useAlert();
 
@@ -70,7 +64,7 @@ const Books = () => {
         }
         return res.json();
       })
-      .then((data: Books[]) => {
+      .then((data: IBook[]) => {
         if (data) {
           setBooks(data);
         }
@@ -87,6 +81,13 @@ const Books = () => {
     fetchBook();
   }, [status])
 
+  const handleChange = (field: keyof IBook, value: any) => {
+    setBooksInput((prevBook) => ({
+      ...prevBook,
+      [field]: value,
+    }));
+  }
+
   const handleClick = (book: string) => {
     fetch(`http://localhost:3001/delete-book-user/${book}`, {
       method: "DELETE",
@@ -99,7 +100,6 @@ const Books = () => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
         }
-
         return res.json();
       })
       .then(data => {
@@ -117,12 +117,13 @@ const Books = () => {
       })
   }
 
-  const handleSaveChangesClick = (book: Books) => {
+  const handleSaveChangesClick = (book: IBook) => {
     const requestBody = {
       email: session?.user?.email,
-      title: title || undefined,
-      author: author || undefined,
-      publishYear: (publishYear !== null && publishYear !== 0) ? publishYear : undefined,
+      title: booksInput.title || undefined,
+      author: booksInput.author || undefined,
+      description: booksInput.description,
+      publishYear: (booksInput.publishYear !== null && booksInput.publishYear !== 0) ? booksInput.publishYear : undefined,
     };
 
     fetch(`http://localhost:3001/update-book-user/${book.title}`, {
@@ -136,7 +137,6 @@ const Books = () => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
         }
-
         return res.json();
       })
       .then(data => {
@@ -161,6 +161,7 @@ const Books = () => {
   }
 
   return (
+    // TODO: Divide into sub components
     <div className="flex flex-col gap-4 justify-center items-center p-10">
       {status === "authenticated" ? (
         <>
@@ -233,7 +234,7 @@ const Books = () => {
                                   className="col-span-3"
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    setTitle(inputValue)
+                                    handleChange('title', inputValue);
                                   }}
                                 />
                               </div>
@@ -247,7 +248,7 @@ const Books = () => {
                                   className="col-span-3"
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    setAuthor(inputValue)
+                                    handleChange('author', inputValue);
                                   }}
                                 />
                               </div>
@@ -262,8 +263,19 @@ const Books = () => {
                                   className="col-span-3"
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    setPublishYear(Number(inputValue));
+                                    handleChange('publishYear', inputValue);
                                   }}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="year" className="text-right">
+                                  Description
+                                </Label>
+                                <Textarea
+                                  defaultValue={book.description}
+                                  id="description"
+                                  className="col-span-3"
+                                  onChange={(e) => handleChange('description', e.target.value)}
                                 />
                               </div>
                             </div>

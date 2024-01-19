@@ -3,13 +3,7 @@ import { Button } from "@components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
-interface IBook {
-  title: string;
-  author: string;
-  publishYear: number;
-  [key: string]: any;
-};
+import { IBook } from "@/types/book-type";
 
 interface BookParams {
   params: {

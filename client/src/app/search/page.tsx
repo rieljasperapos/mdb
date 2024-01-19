@@ -2,30 +2,26 @@
 import { Button } from "@components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
-
-interface Book {
-  title: string;
-  author: string;
-  publishYear: number;
-};
+import { IBook } from "@/types/book-type";
+import { useSession } from "next-auth/react";
 
 const Search = () => {
   const [input, setInput] = useState("");
-  const [result, setResult] = useState<Book | null>(null);
+  const [result, setResult] = useState<IBook | null>(null);
+  const {data: session, status } = useSession();
 
   const handleSubmit = () => {
-    fetch(`http://localhost:3001/books/${input}`, {
+    fetch(`http://localhost:3001/books-user/${input}`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ input })
+      body: JSON.stringify({email: session?.user?.email, title: input })
     })
       .then(res => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
         }
-
         return res.json();
       })
       .then(data => {
@@ -37,7 +33,7 @@ const Search = () => {
         console.error(err);
       })
   }
-  
+
   return (
     <div className="flex flex-col gap-8 justify-center items-center h-screen">
       <div className="mb-10">
