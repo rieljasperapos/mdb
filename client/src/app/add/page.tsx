@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
@@ -11,6 +10,7 @@ import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const Add = () => {
+  // TODO: Compress books input fields to object
   const [inputTitle, setInputTitle] = useState("");
   const [inputAuthor, setInputAuthor] = useState("");
   const [inputDescription, setInputDescription] = useState("");
@@ -33,8 +33,18 @@ const Add = () => {
     }
   };
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/login");
+    }
+
+  }, [status])
+    
   const handleClick = () => {
+    const email = session?.user?.email;
+    console.log(email);
     const formData = new FormData();
+    formData.append("email", email as string);
     formData.append("inputTitle", inputTitle);
     formData.append("inputAuthor", inputAuthor);
     formData.append("inputPublishYear", inputPublishYear.toString());
@@ -44,9 +54,12 @@ const Add = () => {
       formData.append("image", selectedFile);
     }
 
-    fetch("http://localhost:3001/add-book", {
+    console.log(formData);
+
+    fetch("http://localhost:3001/add-book-user", {
       method: "POST",
-      body: formData,
+      // credentials: "include",
+      body: formData
     })
       .then((res) => {
         if (res.ok) {
@@ -80,10 +93,10 @@ const Add = () => {
   if (!session?.user) {
     redirect("/auth/login")
   }
-
+        
   return (
     <div className="flex flex-col justify-center items-center p-10">
-      {status === "authenticated" ?
+      {status === "authenticated" ? (
         <>
           <div className="my-10">
             <Button variant="ghost" asChild>
@@ -153,9 +166,9 @@ const Add = () => {
             </Button>
           </div>
         </>
-        :
+      ):(
         <p>Loading...</p>
-      }
+      )}
     </div>
   );
 };

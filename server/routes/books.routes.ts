@@ -15,5 +15,11 @@ router.post('/add-book', upload.single('image'), booksController.addBook);
 router.put('/update-book/:title', booksController.updateBook);
 router.delete('/delete-book/:title', booksController.deleteBook);
 router.get('/book-count', booksController.addedBooksByMonth);
+router.post('/add-book-user', upload.single('image'), booksController.addBookUser);
+router.post('/get-book-user', booksController.getBookUser);
+router.post('/book-count-user', booksController.addedBooksByMonthUser);
+router.post('/books-user/:title', booksController.searchBookByTitleUser);
+router.put('/update-book-user/:title', booksController.updateBookUser);
+router.delete('/delete-book-user/:title', booksController.deleteBookUser);
 
 export = router;

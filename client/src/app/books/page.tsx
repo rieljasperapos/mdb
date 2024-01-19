@@ -48,6 +48,7 @@ interface Books {
 };
 
 const Books = () => {
+  // TODO: Compress books input fields to object
   const [books, setBooks] = useState<Books[] | null>(null);
   const [title, setTitle] = useState<string | null>(null);
   const [author, setAuthor] = useState<string | null>(null);
@@ -55,8 +56,18 @@ const Books = () => {
   const { data: session, status } = useSession();
   const alerts = useAlert();
 
+  console.log(session?.user?.email);
+  console.log(status);
+
   const fetchBook = () => {
-    fetch('http://localhost:3001/books')
+    console.log("TEST");
+    fetch('http://localhost:3001/get-book-user', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: session?.user?.email }),
+    })
       .then(res => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
@@ -64,6 +75,7 @@ const Books = () => {
         return res.json();
       })
       .then((data: Books[]) => {
+        console.log(data);
         if (data) {
           setBooks(data);
         }
@@ -74,15 +86,19 @@ const Books = () => {
   }
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/login");
+    }
     fetchBook();
-  }, [])
+  }, [status])
 
   const handleClick = (book: string) => {
-    fetch(`http://localhost:3001/delete-book/${book}`, {
+    fetch(`http://localhost:3001/delete-book-user/${book}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({ email: session?.user?.email })
     })
       .then(res => {
         if (!res.ok) {
@@ -99,7 +115,6 @@ const Books = () => {
             status: true
           });
           fetchBook();
-
         }
       })
       .catch(err => {
@@ -109,12 +124,13 @@ const Books = () => {
 
   const handleSaveChangesClick = (book: Books) => {
     const requestBody = {
+      email: session?.user?.email,
       title: title || undefined,
       author: author || undefined,
       publishYear: (publishYear !== null && publishYear !== 0) ? publishYear : undefined,
     };
 
-    fetch(`http://localhost:3001/update-book/${book.title}`, {
+    fetch(`http://localhost:3001/update-book-user/${book.title}`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
@@ -129,27 +145,33 @@ const Books = () => {
         return res.json();
       })
       .then(data => {
-        if (data) {
+        if (data.valid) {
           alerts.showAlertSuccess({
             message: data.message,
             type: 'success',
             status: true
           });
           fetchBook();
+        } else {
+          alerts.showAlertFailed({
+            message: data.message,
+            type: 'failed',
+            status: true
+          });
         }
       })
       .catch(err => {
         console.error(err);
       })
   }
-
+  
   if (!session?.user) {
     redirect("/auth/login");
   }
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center p-10">
-      {status === "authenticated" ?
+      {status === "authenticated" ? (
         <>
           {alerts.alertSuccess.status &&
             <Alert variant='success'>
@@ -157,6 +179,15 @@ const Books = () => {
               <AlertTitle>Successful!</AlertTitle>
               <AlertDescription>
                 {alerts.alertSuccess.message}
+              </AlertDescription>
+            </Alert>
+          }
+          {alerts.alertFailed.status &&
+            <Alert variant="destructive">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Failed!</AlertTitle>
+              <AlertDescription>
+                {alerts.alertFailed.message}
               </AlertDescription>
             </Alert>
           }
@@ -282,9 +313,9 @@ const Books = () => {
             }
           </div>
         </>
-        :
+      ):(
         <p>Loading...</p>
-      }
+      )}
     </div>
   )
 }

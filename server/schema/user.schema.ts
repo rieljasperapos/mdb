@@ -1,10 +1,12 @@
 import { Schema } from "mongoose";
+import { IBook, bookSchema } from "./book.schema";
 
 export interface IUser {
   name: string;
   email: string;
   password?: string;
   confirmPassword?: string;
+  books: IBook;
 };
 
 export const userSchema: Schema<IUser> = new Schema<IUser>(
@@ -22,7 +24,8 @@ export const userSchema: Schema<IUser> = new Schema<IUser>(
     },
     confirmPassword: {
       type: String,
-    }
+    },
+    books: [bookSchema],
   },
   {
     timestamps: true,
