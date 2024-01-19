@@ -3,7 +3,7 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "@components/ui/textarea";
 import { toast } from "@components/ui/use-toast";
 import { redirect } from "next/navigation";
@@ -23,11 +23,11 @@ const Add = () => {
 
     if (file) {
       const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-      allowedTypes.includes(file.type)
-        ? setSelectedFile(file)
-        : alert(
-          "Invalid file type. Please select an image (JPEG, PNG, or GIF)."
-        );
+      allowedTypes.includes(file.type) ?  (
+        setSelectedFile(file)
+      ): (
+        alert("Invalid file type. Please select an image (JPEG, PNG, or GIF).")
+      );
     } else {
       setSelectedFile(null);
     }
@@ -42,7 +42,6 @@ const Add = () => {
     
   const handleClick = () => {
     const email = session?.user?.email;
-    console.log(email);
     const formData = new FormData();
     formData.append("email", email as string);
     formData.append("inputTitle", inputTitle);
@@ -54,11 +53,8 @@ const Add = () => {
       formData.append("image", selectedFile);
     }
 
-    console.log(formData);
-
     fetch("http://localhost:3001/add-book-user", {
       method: "POST",
-      // credentials: "include",
       body: formData
     })
       .then((res) => {
@@ -90,10 +86,6 @@ const Add = () => {
       });
   };
 
-  if (!session?.user) {
-    redirect("/auth/login")
-  }
-        
   return (
     <div className="flex flex-col justify-center items-center p-10">
       {status === "authenticated" ? (

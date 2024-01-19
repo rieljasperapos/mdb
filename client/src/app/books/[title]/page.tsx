@@ -21,9 +21,6 @@ const Book = ({ params: { title } }: BookParams) => {
   const [bookData, setBookData] = useState<IBook | null>(null);
   const { data: session, status } = useSession();
 
-  console.log(session?.user);
-  console.log(status);
-
   const fetchBookContent = () => {
     fetch(`http://localhost:3001/books-user/${title}`, {
       method: "POST",
@@ -36,12 +33,10 @@ const Book = ({ params: { title } }: BookParams) => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
         }
-
         return res.json();
       })
       .then((data: IBook) => {
         if (data) {
-          console.log(data);
           setBookData(data);
         }
       })

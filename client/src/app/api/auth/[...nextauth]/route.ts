@@ -47,14 +47,10 @@ export const authOptions: any = {
         return true;
       }
       if (account?.provider == "github") {
-        await connect();
+        connect();
         try {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
-            const newUser = new User({
-              email: user.email,
-            });
-
             await User.create({
               email: user.email,
               name: user.name

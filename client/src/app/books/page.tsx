@@ -56,11 +56,7 @@ const Books = () => {
   const { data: session, status } = useSession();
   const alerts = useAlert();
 
-  console.log(session?.user?.email);
-  console.log(status);
-
   const fetchBook = () => {
-    console.log("TEST");
     fetch('http://localhost:3001/get-book-user', {
       method: "POST",
       headers: {
@@ -75,7 +71,6 @@ const Books = () => {
         return res.json();
       })
       .then((data: Books[]) => {
-        console.log(data);
         if (data) {
           setBooks(data);
         }
@@ -163,10 +158,6 @@ const Books = () => {
       .catch(err => {
         console.error(err);
       })
-  }
-  
-  if (!session?.user) {
-    redirect("/auth/login");
   }
 
   return (

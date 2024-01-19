@@ -26,17 +26,6 @@ type CardWrapperProps = {
   showSocial?: boolean;
 } & (RegisterProps | LoginProps);
 
-// interface CardWrapperProps {
-//   children: React.ReactNode;
-//   headerTitle: string;
-//   headerLabel: string;
-//   showSocial?: boolean;
-//   register: string;
-//   registerHref: string;
-//   login: string;
-//   loginHref: string;
-// }
-
 export const CardWrapper = ({
   children,
   headerTitle,
@@ -44,7 +33,6 @@ export const CardWrapper = ({
   showSocial,
   ...buttonProps
 }: CardWrapperProps) => {
-  // const { children, headerTitle, headerLabel, showSocial} = props;
   const { register, registerHref, login, loginHref } = buttonProps as RegisterProps & LoginProps;
   return (
     <Card className="w-[400px] shadow-md">
