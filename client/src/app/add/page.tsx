@@ -3,10 +3,10 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Textarea } from "@components/ui/textarea";
 import { toast } from "@components/ui/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const Add = () => {
@@ -16,8 +16,6 @@ const Add = () => {
   const [inputDescription, setInputDescription] = useState("");
   const [inputPublishYear, setInputPublishYear] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [authenticated, setAuthenticated] = useState(false);
-  const router = useRouter();
   const { data: session, status } = useSession();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,26 +39,7 @@ const Add = () => {
     }
 
   }, [status])
-
-  // useEffect(() => {
-  //   fetch("http://localhost:3001/auth", {
-  //     credentials: "include"
-  //   })
-  //   .then((res) => {
-  //     if (!res.ok) {
-  //       throw new Error(`Error ${res.status}`)
-  //     }
-  //     return res.json();
-  //   })
-  //   .then((data) => {
-  //     if (data.status) {
-  //       setAuthenticated(true);
-  //     }else {
-  //       router.push("/auth/login")
-  //     }
-  //   })
-  // })
-
+    
   const handleClick = () => {
     const email = session?.user?.email;
     console.log(email);
@@ -111,16 +90,10 @@ const Add = () => {
       });
   };
 
-  console.log(session?.user);
-  console.log(status);
-
-  // if (!session?.user) {
-  //   redirect("/auth/login")
-  // }
-  // if (!authenticated) {
-  //   return null;
-  // }
-
+  if (!session?.user) {
+    redirect("/auth/login")
+  }
+        
   return (
     <div className="flex flex-col justify-center items-center p-10">
       {status === "authenticated" ? (

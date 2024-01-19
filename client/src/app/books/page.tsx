@@ -38,7 +38,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { RiDeleteBin6Line } from "react-icons/ri";
 import useAlert from "@/hooks/useAlert";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 interface Books {
@@ -53,10 +53,8 @@ const Books = () => {
   const [title, setTitle] = useState<string | null>(null);
   const [author, setAuthor] = useState<string | null>(null);
   const [publishYear, setPublishYear] = useState<number | null>(null);
-  const [authenticated, setAuthenticated] = useState(false);
   const { data: session, status } = useSession();
   const alerts = useAlert();
-  const router = useRouter();
 
   console.log(session?.user?.email);
   console.log(status);
@@ -87,28 +85,10 @@ const Books = () => {
       })
   }
 
-  // if (session?.user)
-
   useEffect(() => {
     if (status === "unauthenticated") {
       redirect("/auth/login");
     }
-    // fetch("http://localhost:3001/auth", {
-    //   credentials: "include"
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       throw new Error(`Error ${res.status}`)
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     if (data.status) {
-    //       setAuthenticated(true);
-    //     } else {
-    //       router.push("/auth/login")
-    //     }
-    //   })
     fetchBook();
   }, [status])
 
@@ -184,13 +164,10 @@ const Books = () => {
         console.error(err);
       })
   }
-
-  // if (!session?.user) {
-  //   redirect("/auth/login");
-  // }
-  // if (!authenticated) {
-  //   return null;
-  // }
+  
+  if (!session?.user) {
+    redirect("/auth/login");
+  }
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center p-10">
