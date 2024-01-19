@@ -8,8 +8,6 @@ interface CustomRequest extends Request {
 
 export const authenticate = (req: CustomRequest, res: Response, next: NextFunction) => {
   const authToken = req.cookies.accessToken;
-  console.log("AUTH TOKEN: ", authToken)
-
   if (!authToken) {
     return res.send({
       message: "Unauthorized Access"
