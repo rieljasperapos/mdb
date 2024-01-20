@@ -3,13 +3,7 @@ import { Button } from "@components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
-interface IBook {
-  title: string;
-  author: string;
-  publishYear: number;
-  [key: string]: any;
-};
+import { IBook } from "@/types/book-type";
 
 interface BookParams {
   params: {
@@ -20,9 +14,6 @@ interface BookParams {
 const Book = ({ params: { title } }: BookParams) => {
   const [bookData, setBookData] = useState<IBook | null>(null);
   const { data: session, status } = useSession();
-
-  console.log(session?.user);
-  console.log(status);
 
   const fetchBookContent = () => {
     fetch(`http://localhost:3001/books-user/${title}`, {
@@ -36,12 +27,10 @@ const Book = ({ params: { title } }: BookParams) => {
         if (!res.ok) {
           throw new Error(`Error ${res.status}`);
         }
-
         return res.json();
       })
       .then((data: IBook) => {
         if (data) {
-          console.log(data);
           setBookData(data);
         }
       })

@@ -152,7 +152,7 @@ export const RegisterForm = () => {
                     )}
                   />
                 </div>
-                <FormError message="" />
+                <FormError message={error} />
                 <FormSuccess message={success} />
                 <Button
                   className="w-full"
