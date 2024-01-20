@@ -8,13 +8,11 @@ import BookTable from "@/components/book-table";
 
 const Books = () => {
   const { status } = useSession();
-
   useEffect(() => {
     if (status === "unauthenticated") {
       redirect("/auth/login");
     }
   }, [status])
-
   return (
     <div className="flex flex-col gap-4 justify-center items-center p-10">
       {status === "authenticated" ? (
