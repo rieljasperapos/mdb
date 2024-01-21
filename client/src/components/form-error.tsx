@@ -1,10 +1,7 @@
 import { FaCircleExclamation } from "react-icons/fa6";
+import { FormStatusProps } from "@/types/auth-type";
 
-interface FormErrorProps {
-  message: string;
-}
-
-export const FormError = ({ message }: FormErrorProps) => {
+export const FormError = ({ message }: FormStatusProps) => {
   return (
     message && (
       <div className="bg-destructive/15 flex items-center gap-3 p-2 rounded-md text-destructive/50 text-sm">

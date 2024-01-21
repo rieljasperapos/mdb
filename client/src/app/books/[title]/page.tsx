@@ -3,13 +3,7 @@ import { Button } from "@components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { IBook } from "@/types/book-type";
-
-interface BookParams {
-  params: {
-    title: string;
-  }
-};
+import { IBook, BookParams } from "@/types/book-type";
 
 const Book = ({ params: { title } }: BookParams) => {
   const [bookData, setBookData] = useState<IBook | null>(null);

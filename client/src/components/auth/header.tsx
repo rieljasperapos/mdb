@@ -1,7 +1,4 @@
-interface CardHeaderProps {
-  headerTitle: string;
-  headerLabel: string;
-}
+import { CardHeaderProps } from "@/types/auth-type"
 
 export const Header = ({
   headerTitle,
