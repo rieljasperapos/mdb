@@ -1,10 +1,6 @@
 import { Button } from "@components/ui/button";
 import Link from "next/link";
-
-interface MorphButtonProps {
-  label: string;
-  href: string;
-}
+import { MorphButtonProps } from "@/types/auth-type";
 
 export const MorphButton = ({
   label,
