@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 const Dashboard = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   useEffect(() => {
     if (status === "unauthenticated") {

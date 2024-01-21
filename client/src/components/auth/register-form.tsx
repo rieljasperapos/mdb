@@ -23,7 +23,7 @@ import { redirect } from "next/navigation"
 export const RegisterForm = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
