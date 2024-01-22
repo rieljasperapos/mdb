@@ -1,4 +1,4 @@
-import { UserButton } from '@/components/user-button'
+import { UserButton } from '@components/user-button'
 import { getServerSession } from 'next-auth';
 
 export default async function Home() {
