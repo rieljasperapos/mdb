@@ -1,12 +1,9 @@
 import { CiCircleCheck } from "react-icons/ci"
-
-interface FormErrorProps {
-  message: string;
-}
+import { FormStatusProps } from "@/types/auth-type"
 
 export const FormSuccess = ({
   message
-}: FormErrorProps) => {
+}: FormStatusProps) => {
   return (
     message && (
       <div className="bg-emerald-500/15 flex items-center gap-x-3 p-2 rounded-md text-emerald-500 text-sm">

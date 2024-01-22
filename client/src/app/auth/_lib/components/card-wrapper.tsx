@@ -4,27 +4,15 @@ import {
   CardHeader,
   CardFooter
 } from "@components/ui/card";
-import { Header } from "@components/auth/header";
-import { Socials } from "@components/auth/show-social";
-import { MorphButton } from "@components/auth/morph-button";
+import { Header } from "./header";
+import { Socials } from "./show-social";
+import { MorphButton } from "./morph-button";
 import React from "react";
-
-type RegisterProps = {
-  register: string;
-  registerHref: string;
-};
-
-type LoginProps = {
-  login: string;
-  loginHref: string;
-};
-
-type CardWrapperProps = {
-  children: React.ReactNode;
-  headerTitle: string;
-  headerLabel: string;
-  showSocial?: boolean;
-} & (RegisterProps | LoginProps);
+import { 
+  RegisterProps,
+  LoginProps,
+  CardWrapperProps
+} from "@/types/auth-type";
 
 export const CardWrapper = ({
   children,

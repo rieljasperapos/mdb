@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 import { IBook, initialBooksInput } from "@/types/book-type";
 
 const Add = () => {
-  // TODO: Compress books input fields to object
   const [booksInput, setBooksInput] = useState<IBook>(initialBooksInput);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { data: session, status } = useSession();
@@ -37,12 +36,6 @@ const Add = () => {
       setSelectedFile(null);
     }
   };
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      redirect("/auth/login");
-    }
-  }, [status])
     
   const handleClick = () => {
     const email = session?.user?.email;
@@ -86,6 +79,12 @@ const Add = () => {
         console.warn(err);
       });
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/login");
+    }
+  }, [status])
 
   return (
     <div className="flex flex-col justify-center items-center p-10">

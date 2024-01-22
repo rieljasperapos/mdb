@@ -8,9 +8,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@components/ui/form"
-import { FormError } from "@components/form-error"
-import { FormSuccess } from "@components/form-success"
-import { CardWrapper } from "@components/auth/card-wrapper"
+import { FormError } from "./form-error"
+import { FormSuccess } from "./form-success"
+import { CardWrapper } from "./card-wrapper"
 import { Button } from "@components/ui/button"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -23,7 +23,7 @@ import { redirect } from "next/navigation"
 export const RegisterForm = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {

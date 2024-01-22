@@ -29,8 +29,6 @@ export function Overview() {
         })
     }, [status])
 
-    console.log(data);
-
     return (
         <ResponsiveContainer width="100%" height={350}>
             <BarChart data={data}>

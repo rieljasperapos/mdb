@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { LoginSchema } from "@/schemas"
-
 import {
   Form,
   FormControl,
@@ -12,11 +11,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@components/ui/form"
-import { CardWrapper } from "@components/auth/card-wrapper"
+import { CardWrapper } from "./card-wrapper"
 import { Input } from "@components/ui/input"
 import { Button } from "@components/ui/button"
-import { FormError } from "@components/form-error"
-import { FormSuccess } from "@components/form-success"
+import { FormError } from "./form-error"
+import { FormSuccess } from "./form-success"
 import { redirect } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
 

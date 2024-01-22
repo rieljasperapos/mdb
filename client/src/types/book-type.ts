@@ -11,3 +11,9 @@ export const initialBooksInput = {
   description: "",
   publishYear: 0,
 };
+
+export interface BookParams {
+  params: {
+    title: string;
+  }
+};

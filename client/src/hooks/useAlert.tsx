@@ -45,8 +45,6 @@ const useAlert = () => {
     setAlertFailed(initialAlert);
   }
 
-  // setAlertSuccess({message: props?.message, status: props?.status});
-
   return { alertSuccess, alertFailed, showAlertSuccess, showAlertFailed, hideSuccessAlert, hideFailedAlert };
 }
 
