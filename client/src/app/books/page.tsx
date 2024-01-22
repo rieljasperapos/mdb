@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
-import BookTable from "@/components/book-table";
+import BookTable from "@/app/books/_lib/components/book-table";
 
 const Books = () => {
   const { status } = useSession();

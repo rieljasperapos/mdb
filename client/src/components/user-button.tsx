@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@components/ui/button"
-import { LoginButton } from "@components/auth/login-button"
+import { LoginButton } from "@components/login-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,

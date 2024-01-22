@@ -1,6 +1,6 @@
 "use client"
 import { Header } from '@/components/header';
-import { Overview } from '@components/added-books-analytics';
+import { Overview } from '@/app/dashboard/_lib/components/books-analytics';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
