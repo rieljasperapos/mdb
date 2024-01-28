@@ -5,7 +5,6 @@ import { IUser } from "../schema/user.schema";
 import { Request, Response } from "express";
 
 export const getBookUser = (req: Request, res: Response) => {
-  console.log("REQUEST: ", req.body.email);
   User.findOne({ email: req.body.email })
     .then((user: IUser | null) => {
       if (user) {
@@ -22,7 +21,6 @@ export const getBookUser = (req: Request, res: Response) => {
 }
 
 export const addBookUser = (req: Request, res: Response) => {
-  console.log(req.body);
   User.findOne({ email: req.body.email })
     .then((user: IUser | null) => {
       if (user) {
@@ -78,7 +76,6 @@ export const searchBookByTitleUser = (req: Request, res: Response) => {
       if (user) {
         const matchingBook: IBook = user.books.find((book: IBook) => book.title === req.params.title);
         if (matchingBook) {
-          console.log("BOOK TITLE: ", matchingBook);
           const imageDataURL = matchingBook.image ? `data:image/jpeg;base64,${matchingBook.image.toString('base64')}` : null;
           const responseData = {
             title: matchingBook.title,
@@ -219,7 +216,6 @@ export const updateBook = (req: Request, res: Response) => {
 }
 
 export const deleteBookUser = (req: Request, res: Response) => {
-  console.log(req.body);
   User.findOne({ email: req.body.email })
     .then((user: IUser | null) => {
       const matchedBook: IBook = user?.books.find((books: IBook) => books.title === req.params.title);

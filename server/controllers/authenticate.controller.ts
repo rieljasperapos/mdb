@@ -5,7 +5,6 @@ interface CustomRequest extends Request {
 };
 
 export const getAuthenticate = (req: CustomRequest, res: Response) => {
-  console.log(req.user.user.name);
   return res.send({message: "Authenticated", status: true, data: req.user})
 }
 
