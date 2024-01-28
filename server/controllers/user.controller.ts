@@ -35,7 +35,7 @@ export const loginUser = (req: Request, res: Response) => {
             name: data.name,
             email: data.email
           }
-          // TO DO: JWT Sign
+          // TO DO: JWT Sign, Access Token & Refresh Token
           const token = jwt.sign({ user }, config.SECRET_KEY as string, {expiresIn: '1h'});
           res.cookie('accessToken', token, {maxAge: 3600000, httpOnly: true})
           res.send({
