@@ -42,7 +42,7 @@ export const RegisterForm = () => {
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     // TODO: API Fetch
-    fetch("http://localhost:3001/register-user", {
+    fetch("https://api-mdb.vercel.app/register-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
