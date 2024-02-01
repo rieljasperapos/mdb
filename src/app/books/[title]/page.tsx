@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { IBook, BookParams } from "@/types/book-type";
+import Image from "next/image";
 
 const Book = ({ params: { title } }: BookParams) => {
   const [bookData, setBookData] = useState<IBook | null>(null);
@@ -35,7 +36,7 @@ const Book = ({ params: { title } }: BookParams) => {
 
   useEffect(() => {
     fetchBookContent();
-  }, [status])
+  })
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center p-20">
@@ -49,7 +50,7 @@ const Book = ({ params: { title } }: BookParams) => {
           <div className="grid gap-4 px-40">
             <div className="flex justify-center items-center">
               {bookData?.image ? (
-                <img src={bookData.image} alt={bookData.title} style={{ maxWidth: '100%', maxHeight: '400px' }} className="mb-16" />
+                <Image src={bookData.image} alt={bookData.title} style={{ maxWidth: '100%', maxHeight: '400px' }} className="mb-16" />
               ) : (
                 <p>No image available</p>
               )}

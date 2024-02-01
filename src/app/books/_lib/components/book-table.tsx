@@ -165,7 +165,7 @@ const BookTable = () => {
       redirect("/auth/login");
     }
     fetchBook();
-  }, [status])
+  })
 
   return (
     <>
@@ -217,7 +217,7 @@ const BookTable = () => {
                       <DialogHeader>
                         <DialogTitle>Edit Book</DialogTitle>
                         <DialogDescription>
-                          Make changes to the selected book. Click save when you're done.
+                          Make changes to the selected book. Click save when youre done.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
@@ -293,7 +293,7 @@ const BookTable = () => {
                         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                           This action cannot be undone. This will permanently delete the book
-                          and remove it's data from our servers.
+                          and remove its data from our servers.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
