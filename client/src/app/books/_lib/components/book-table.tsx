@@ -55,6 +55,15 @@ const BookTable = () => {
     }));
   }
 
+  const dateToString = (createdAt: string) => {
+    const originalDate = new Date(createdAt);
+
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate: string = originalDate.toLocaleDateString('en-US', options);
+
+    return formattedDate;
+  }
+
   const handleClick = (book: string) => {
     fetch(`https://api-mdb.vercel.app/delete-book-user/${book}`, {
       method: "DELETE",
@@ -272,6 +281,9 @@ const BookTable = () => {
                       </DialogClose>
                     </DialogContent>
                   </Dialog>
+                </TableCell>
+                <TableCell>
+                  {dateToString(book.createdAt)}
                 </TableCell>
                 <TableCell>
                   <AlertDialog>
