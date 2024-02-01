@@ -11,7 +11,7 @@ const Search = () => {
   const {data: session, status } = useSession();
 
   const handleSubmit = () => {
-    fetch(`http://localhost:3001/books-user/${input}`, {
+    fetch(`https://api-mdb.vercel.app/books-user/${input}`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

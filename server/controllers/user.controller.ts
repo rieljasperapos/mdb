@@ -6,11 +6,9 @@ import jwt from 'jsonwebtoken'
 import { config } from '../util/config.util';
 
 export const getUsers = (req: Request, res: Response) => {
-  console.log(req);
   User.find({})
     .then((data: IUser[]) => {
       res.send(data);
-      console.log(data);
     })
     .catch((err: Error) => {
       console.error(err);
@@ -31,16 +29,14 @@ export const loginUser = (req: Request, res: Response) => {
   })
   .then((data: IUser | null) => {
     if (data) {
-      console.log("DATA: ", data.password);
       bcrypt.compare(req.body.password, data.password as string, (err, isPasswordMatched) => {
         if (isPasswordMatched) {
           const user = {
             name: data.name,
             email: data.email
           }
-          // TO DO: JWT Sign
+          // TO DO: JWT Sign, Access Token & Refresh Token
           const token = jwt.sign({ user }, config.SECRET_KEY as string, {expiresIn: '1h'});
-          console.log(token);
           res.cookie('accessToken', token, {maxAge: 3600000, httpOnly: true})
           res.send({
             message: "Successfully logged in",
@@ -80,15 +76,13 @@ export const registerUser = (req: Request, res: Response) => {
         User.findOne({ email: newUser.email })
           .then((existingUser: IUser | null) => {
             if (existingUser) {
-              console.log(existingUser);
               res.send({
                 message: "Email already exist",
                 status: false
               })
             } else {
               User.create(newUser)
-                .then((data: IUser) => {
-                  console.log(data);
+                .then(() => {
                   res.send({
                     message: "Successfully added user",
                     status: true

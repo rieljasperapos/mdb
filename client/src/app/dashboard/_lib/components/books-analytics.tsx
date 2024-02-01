@@ -8,7 +8,7 @@ export function Overview() {
     const { data: session, status } = useSession();
 
     useEffect(() => {
-        fetch('http://localhost:3001/book-count-user', {
+        fetch('https://api-mdb.vercel.app/book-count-user', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
