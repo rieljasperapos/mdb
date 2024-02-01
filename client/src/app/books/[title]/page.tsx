@@ -10,7 +10,7 @@ const Book = ({ params: { title } }: BookParams) => {
   const { data: session, status } = useSession();
 
   const fetchBookContent = () => {
-    fetch(`http://localhost:3001/books-user/${title}`, {
+    fetch(`https://api-mdb.vercel.app/books-user/${title}`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

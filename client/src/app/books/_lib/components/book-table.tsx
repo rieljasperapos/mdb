@@ -56,7 +56,7 @@ const BookTable = () => {
   }
 
   const handleClick = (book: string) => {
-    fetch(`http://localhost:3001/delete-book-user/${book}`, {
+    fetch(`https://api-mdb.vercel.app/delete-book-user/${book}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ const BookTable = () => {
       publishYear: (booksInput.publishYear !== null && booksInput.publishYear !== 0) ? booksInput.publishYear : undefined,
     };
 
-    fetch(`http://localhost:3001/update-book-user/${book.title}`, {
+    fetch(`https://api-mdb.vercel.app/update-book-user/${book.title}`, {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ const BookTable = () => {
   }
 
   const fetchBook = () => {
-    fetch('http://localhost:3001/get-book-user', {
+    fetch('https://api-mdb.vercel.app/get-book-user', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
