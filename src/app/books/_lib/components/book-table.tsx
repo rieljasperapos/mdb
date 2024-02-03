@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { IBook, initialBooksInput } from "@/types/book-type";
 import {
   Table,
@@ -136,7 +136,7 @@ const BookTable = () => {
       })
   }
 
-  const fetchBook = () => {
+  const fetchBook = useCallback(() => {
     fetch('https://api-mdb.vercel.app/get-book-user', {
       method: "POST",
       headers: {
@@ -158,14 +158,14 @@ const BookTable = () => {
       .catch((err: Error) => {
         console.error(err);
       })
-  }
+  }, [session?.user?.email])
 
   useEffect(() => {
     if (status === "unauthenticated") {
       redirect("/auth/login");
     }
     fetchBook();
-  })
+  }, [fetchBook, status])
 
   return (
     <>
