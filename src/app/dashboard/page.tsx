@@ -12,7 +12,7 @@ const Dashboard = () => {
     if (status === "unauthenticated") {
       redirect('/auth/login');
     }
-  })
+  }, [status])
 
   return (
     <div className='flex flex-col justify-center items-center p-10'>
