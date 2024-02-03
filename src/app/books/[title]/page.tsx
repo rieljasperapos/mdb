@@ -55,11 +55,23 @@ const Book = ({ params: { title } }: BookParams) => {
               )}
             </div>
             <h1>Title:</h1>
-            <p>{bookData?.title}</p>
+            {bookData?.title ? (
+              <p>{bookData?.title}</p>
+            ):(
+              <p>Loading...</p>
+            )}
             <h1>Author:</h1>
-            <p>{bookData?.author}</p>
+            {bookData?.author ? (
+              <p>{bookData?.author}</p>
+            ):(
+              <p>Loading...</p>
+            )}
             <h1>Year Published:</h1>
-            <p>{bookData?.publishYear}</p>
+            {bookData?.publishYear ? (
+              <p>{bookData?.publishYear}</p>
+            ):(
+              <p>Loading...</p>
+            )}
             {bookData?.description ?
               <>
                 <h1>Description:</h1>
