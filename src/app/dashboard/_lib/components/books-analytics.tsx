@@ -27,7 +27,7 @@ export function Overview() {
         .catch(err => {
             console.error(err);
         })
-    })
+    }, [session?.user?.email])
 
     return (
         <ResponsiveContainer width="100%" height={350}>
