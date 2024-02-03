@@ -10,33 +10,32 @@ const Book = ({ params: { title } }: BookParams) => {
   const [bookData, setBookData] = useState<IBook | null>(null);
   const { data: session, status } = useSession();
 
-  const fetchBookContent = () => {
-    fetch(`https://api-mdb.vercel.app/books-user/${title}`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email: session?.user?.email, title: title })
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`Error ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data: IBook) => {
-        if (data) {
-          setBookData(data);
-        }
-      })
-      .catch((err: Error) => {
-        console.error(err);
-      })
-  }
-
   useEffect(() => {
+    const fetchBookContent = () => {
+      fetch(`https://api-mdb.vercel.app/books-user/${title}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: session?.user?.email, title: title })
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`Error ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data: IBook) => {
+          if (data) {
+            setBookData(data);
+          }
+        })
+        .catch((err: Error) => {
+          console.error(err);
+        })
+    }
     fetchBookContent();
-  })
+  }, [session?.user?.email, title])
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center p-20">
